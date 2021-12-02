@@ -29,5 +29,5 @@ def part_2():
             aim -= v
     return forward * depth
 
-# print(part_1())
+print(part_1())
 print(part_2())
