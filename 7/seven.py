@@ -19,7 +19,7 @@ def part_1():
 def part_2():
     def sum_to_n(n):
         n = abs(n)
-        return int(n * (n + 1) / 2)
+        return n * (n + 1) // 2
     return min_fuel(sum_to_n)
 
 print(part_1())
