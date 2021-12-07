@@ -15,12 +15,9 @@ class Fish:
             return Fish(8)
         return None
 
-    def val(self):
-        return self.state
-
-def part_1():
+def get_fishes_brute(days):
     fishes = [Fish(state) for state in states]
-    for _ in range(80):
+    for _ in range(days):
         new_fishes = []
         for fish in fishes:
             new = fish.process_new_day()
@@ -29,9 +26,9 @@ def part_1():
         fishes += new_fishes
     return len(fishes)
 
-def part_2():
+def get_fishes(days):
     fishes = collections.Counter(states)
-    for _ in range(256):
+    for _ in range(days):
         next_day_fishes = collections.defaultdict(int, {
             state-1: count for state, count in fishes.items() if state-1 >= 0
         })
@@ -40,6 +37,12 @@ def part_2():
             next_day_fishes[6] += fishes[0]
         fishes = next_day_fishes
     return sum(fishes.values())
+
+def part_1():
+    return get_fishes(80)
+
+def part_2():
+    return get_fishes(256)
 
 print(part_1())
 print(part_2())
