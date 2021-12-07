@@ -1,3 +1,16 @@
+with open('4/input.txt') as f:
+    numbers = f.readline().split(',')
+    numbers = [int(n) for n in numbers]
+    f.readline()
+    board_vals = []
+    for vals in f.read().split('\n\n'):
+        board = []
+        for row in vals.split('\n'):
+            int_row = [int(r) for r in row.split()]
+            board.append(int_row)
+        board_vals.append(board)
+
+
 class Bingo():
 
     def __init__(self, rows):
@@ -30,18 +43,6 @@ class Bingo():
                 return True
         return False
 
-with open('4/input.txt') as f:
-    numbers = f.readline().split(',')
-    numbers = [int(n) for n in numbers]
-    f.readline()
-    board_vals = []
-    for vals in f.read().split('\n\n'):
-        board = []
-        for row in vals.split('\n'):
-            int_row = [int(r) for r in row.split()]
-            board.append(int_row)
-        board_vals.append(board)
-
 
 def part_1():
     boards = [Bingo(board) for board in board_vals]
@@ -51,24 +52,22 @@ def part_1():
             break
         for board in boards:
             if board.add_called(num) and board.is_bingo():
-                first_bingo = (num, board.get_unmarked())
-                break
-    return first_bingo[0] * sum(first_bingo[1])
+                return num * sum(board.get_unmarked())
+    return 'No Bingo Found.'
 
 def part_2():
     boards = [Bingo(board) for board in board_vals]
     board_nums = [i for i in range(len(boards))]
-    last_bingo = None
-    last = -1
-    for board in boards:
-        for i in range(len(numbers)):
-            num = numbers[i]
-            if board.add_called(num) and board.is_bingo():
-                if i > last:
-                    last = i
-                    last_bingo = (num, board.get_unmarked())
-                break
-    return last_bingo[0] * sum(last_bingo[1])
+    for num in numbers:
+        rerun_boards = []
+        for board_n in board_nums:
+            board = boards[board_n]
+            if not(board.add_called(num) and board.is_bingo()):
+                rerun_boards.append(board_n)
+            elif len(board_nums) == 1:
+                return num * sum(board.get_unmarked())
+        board_nums = rerun_boards
+    return 'No Bingo Found.'
 
 print(part_1())
 print(part_2())
