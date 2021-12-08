@@ -8,16 +8,16 @@ with open('8/input.txt') as f:
 
 class SevenSegmentNumbers:
     num_to_ssn = [None for i in range(10)]
+    uniques = {2: 1, 3: 7, 4: 4, 7: 8}
     e = None
 
     def __init__(self, numbers):
         self.num_seg_to_sets = collections.defaultdict(list)
         for number in numbers:
-            self.num_seg_to_sets[len(number)].append(number)
-        self.num_to_ssn[1] = self.num_seg_to_sets[2][0]
-        self.num_to_ssn[4] = self.num_seg_to_sets[4][0]
-        self.num_to_ssn[7] = self.num_seg_to_sets[3][0]
-        self.num_to_ssn[8] = self.num_seg_to_sets[7][0]
+            if len(number) in self.uniques:
+                self.num_to_ssn[self.uniques[len(number)]] = number
+            else:
+                self.num_seg_to_sets[len(number)].append(number)
 
     def _solve_5ssns(self):
         four = self.num_to_ssn[4]
@@ -61,10 +61,10 @@ class SevenSegmentNumbers:
 
 def part_1():
     total_uniques = 0
-    for _, code in numbers:
-        for ssn_num in code:
-            if len(ssn_num) in {2,3,4,7}:
-                total_uniques += 1
+    ssn_nums = [ssn for ssns in numbers for ssn in ssns[1]]
+    for ssn_num in ssn_nums:
+        if len(ssn_num) in SevenSegmentNumbers.uniques:
+            total_uniques += 1
     return total_uniques
 
 def part_2():
